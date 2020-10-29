@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+<meta charset="ISO-8859-1">
+
+    <title>Majority Set:set at least 50% of cells to same number </title>
+    <style>
+      table#board { max-width:none;overflow: scroll;
+border: 1px solid  green; }
+      table#board td {
+           font-size:1em;
+           width:1em;
+           height:1em;
+           border: 1px solid red;
+        }
+      td::before{ content:attr(state); }
+      #stats::before{content:"Numbers:"}
+    </style>
+  </head>
+  <body>
+    <table id="board"></table>
+    <input type="text" id='boardside' value=5 onchange="generateTable(this.value)">Enter Board Side Size(x*x)</input>
+ <br> <input type="text" id='difficulty' value=10 onchange="setdifficulty(this.value)">Enter Difficulty Level(0-35)</input>
+    <div id=stats></div> 
+    <script>
+    var winpercent=50;
+    var gamewin=0;
+     function generateTable(boardsize) {
+        var table = document.getElementById('board');
+         table.innerHTML='';gamewin=0;
+        for (var i = 0; i < boardsize; i++) { 
+          var row = table.insertRow(i); 
+            for (var j = 0; j < boardsize; j++) {
+              
+              var td = document.createElement('td');
+              td.setAttribute('row', i);
+              td.setAttribute('col', j);
+              td.setAttribute('state',((Math.random()*10)|0)%10);
+              td.addEventListener('click', updateBoard);
+              row.appendChild(td);
+            }
+         } 
+      } 
+      function updateBoard() {if(gamewin==1)return;
+        var boardmax=document.querySelectorAll('td[state]').length;
+        var row=parseInt(this.getAttribute('row'),10)
+        var col=parseInt(this.getAttribute('col'),10);
+        toggle(row,col);
+        toggle(row+1,col);
+        toggle(row-1,col);
+        toggle(row,col+1);
+        toggle(row,col-1);
+        var stat=''
+        for(var i=0;i<10;i++){
+   var single=document.querySelectorAll(`td[state="${i}"]`).length;
+    stat+=i+":"+(single*100/boardmax).toFixed(0)+"%   ";
+   if (single>boardmax*winpercent/100){ alert('Victory:'+winpercent+'%\n'+single+"/"+boardmax);gamewin=1;
+generateTable(document.getElementById('boardside').value);return;}
+       }
+       document.getElementById('stats').innerHTML=stat;
+      } 
+    function toggle(row,col){
+    var cell=document.querySelector(`#board td[row="${row}"][col="${col}"]`);
+    if(!cell)return;
+    var state=parseInt(cell.getAttribute('state'),10);
+    cell.setAttribute('state',(state+1)%10);
+
+}
+     function setdifficulty(value){winpercent=30+Math.min(Math.abs(value|0)*2,70);
+document.title=`Majority Set:set at least ${winpercent}% of cells to same number`;
+alert(document.title);
+}
+      generateTable(5);
+    </script>
+  </body>
+</html>
