@@ -33,7 +33,7 @@ if(acc>1.0)acc=1/acc;
 rootguessavg+=isNaN(acc)?0:acc;
 rootattempts+=1;
 var accres=rootguessavg/rootattempts;
-document.getElementById('rr').textContent="Root:"+(100*g/realr+"% of real value\n accurracy="+accres+"");genroot();
+document.getElementById('rr').textContent="Root:"+(100*g/realr+"% of real value\n accurracy="+accres*100+"%");genroot();
 }
 
 function powguess(){
@@ -45,7 +45,7 @@ if(acc>1.0)acc=1/acc;
 powguessavg+=isNaN(acc)?0:acc;
 powattempts+=1;
 var accres=powguessavg/powattempts;
-document.getElementById('pp').textContent="Power:"+(100*g/realr+"% of real value\n accurracy="+accres+"");genpow()
+document.getElementById('pp').textContent="Power:"+(100*g/realr+"% of real value\n accurracy="+accres*100+"%");genpow()
 
 }
 genroot();
